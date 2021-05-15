@@ -1,0 +1,183 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Arbour_Cover 2Sided
+  m_Shader: {fileID: 4800000, guid: 48bb2fbb5da5ed24f9c6d3e9b95005fa, type: 3}
+  m_ShaderKeywords: _USEWORLDCOORDINATE_ON
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AdditionalCutoutmap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 5bf3999e703c85a46b42d373b512ab33, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CutOut:
+        m_Texture: {fileID: 2800000, guid: cd1380d0ca346044b9d46dbbb6329c15, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Diffusemap:
+        m_Texture: {fileID: 2800000, guid: 40b8966d5b5446d4f95776337694391b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DiffusemapCutoutA:
+        m_Texture: {fileID: 2800000, guid: 40b8966d5b5446d4f95776337694391b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 40b8966d5b5446d4f95776337694391b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskExclusion:
+        m_Texture: {fileID: 2800000, guid: aab228c6ee19529499b705743a32c1a8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normalmap:
+        m_Texture: {fileID: 2800000, guid: 5bf3999e703c85a46b42d373b512ab33, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 2800000, guid: b7c594b87ec997341969ef5ef05b50ad, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: 72965f5e522679c419d052bbf6e6a831, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularmapGlossA:
+        m_Texture: {fileID: 2800000, guid: 72965f5e522679c419d052bbf6e6a831, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaveMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 0.7, y: 0.7}
+        m_Offset: {x: 0.08, y: 0.17}
+    - _WaveOffsetMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 0.4, y: 0.4}
+        m_Offset: {x: 0.22, y: 0.34}
+    - _WaveTexture:
+        m_Texture: {fileID: 2800000, guid: fd2f591aeb21a1b4ca7c0691d40ec6a1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WindOffsetMask:
+        m_Texture: {fileID: 2800000, guid: c559ec416209d694ea3eafe5bd6bceef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - __MaskExclusion:
+        m_Texture: {fileID: 2800000, guid: aab228c6ee19529499b705743a32c1a8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - __Normalmap:
+        m_Texture: {fileID: 2800000, guid: 5bf3999e703c85a46b42d373b512ab33, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - __WaveTexture:
+        m_Texture: {fileID: 2800000, guid: fd2f591aeb21a1b4ca7c0691d40ec6a1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - __WindOffsetMask:
+        m_Texture: {fileID: 2800000, guid: c559ec416209d694ea3eafe5bd6bceef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - __WindTexture:
+        m_Texture: {fileID: 2800000, guid: 4fc9222284a0d37429e98ba8d47603ab, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _node_3869:
+        m_Texture: {fileID: 2800000, guid: 5bf3999e703c85a46b42d373b512ab33, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaAmount: 0
+    - _AmbientLight: 0
+    - _AoIntensity: 1
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _Deformation: 0.5
+    - _Desaturate: 0
+    - _DetailNormalMapScale: 1
+    - _DisableAlbedoAlphaChannel: 0
+    - _DstBlend: 0
+    - _EmissiveIntensity: 1
+    - _FresnelStrength: 0
+    - _Glossiness: 1.845
+    - _InvertAdditionalmap: 0
+    - _InvertAlbedoAlpha: 0
+    - _InvertCutout: 0
+    - _InvertMask: 0
+    - _InvertWaveDirection: 0
+    - _InvertWindFlow: 0
+    - _InvertwindFlow: 0
+    - _MaskExclusionIntensity: 0.728
+    - _Metallic: 0
+    - _Mode: 0
+    - _NormalIntensity: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Rotate: 5.34
+    - _Rotation: 35
+    - _SpecularIntensity: 2
+    - _Speed: 1.46
+    - _SpeedWave: 1
+    - _SrcBlend: 1
+    - _Turbulence: 5
+    - _TurbulenceRange: 5
+    - _UVSec: 0
+    - _UseWorldCoordinate: 1
+    - _VisualizeWave: 0
+    - _VisualizeWaveWind: 0
+    - _VisualizeWind: 0
+    - _WaveMaskIntensity: 0.291
+    - _WaveTextureAmount: 0.217
+    - _WaveTiling: 0.2
+    - _WindMaskIntensity: 0
+    - _WindMaskSpread: 0
+    - _WindTiling: 0.021
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+    - _WindDirection: {r: 0.2, g: 0.5, b: 0, a: 0}
+    - _Winddirection: {r: 0, g: 0.9, b: 0, a: 0}
+    - __ColorTint: {r: 1, g: 1, b: 1, a: 1}
+    - __SpecularColor: {r: 1, g: 0.9558824, b: 0.8897059, a: 1}
