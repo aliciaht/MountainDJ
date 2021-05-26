@@ -46,7 +46,7 @@ public class Kit
 public class AltspaceBuildWindow : EditorWindow
 {
 
-    private const string macAssetBundleFolder = "Mac",
+    private const string macAssetBundleFolder = "OSX",
                     pcAssetBundleFolder = "Windows",
                     androidAssetBundleFolder = "Android";
 
@@ -142,7 +142,6 @@ public class AltspaceBuildWindow : EditorWindow
 
     private bool BuildAndroidKit = true;
     private bool BuildWindowsKit = true;
-    private bool BuildMacKit = true;
 
     private Vector2 m_prefabKitsScroll;
 
@@ -244,7 +243,6 @@ public class AltspaceBuildWindow : EditorWindow
             {
                 IsWindowsBuildTarget = _userPrefs.IsWindowsBuild;
                 IsAndroidBuildTarget = _userPrefs.IsAndroidBuild;
-                IsOSXBuildTarget = _userPrefs.IsMacBuild;
                 ProjectName = _userPrefs.ProjectName;
                 saveLocation = _userPrefs.ExportPath;
                 email = _userPrefs.Email;
@@ -256,7 +254,6 @@ public class AltspaceBuildWindow : EditorWindow
         {
             _userPrefs.IsWindowsBuild = IsWindowsBuildTarget;
             _userPrefs.IsAndroidBuild = IsAndroidBuildTarget;
-            _userPrefs.IsMacBuild = IsOSXBuildTarget;
             _userPrefs.ProjectName = ProjectName;
             //_userPrefs.ExportPath = saveLocation;
         }
@@ -336,7 +333,7 @@ public class AltspaceBuildWindow : EditorWindow
             {
                 SignInToAltspaceVR();
             }
-            if(GUILayout.Button("Continue Offline"))
+            if (GUILayout.Button("Continue Offline"))
             {
                 ContinueOffline();
             }
@@ -348,11 +345,11 @@ public class AltspaceBuildWindow : EditorWindow
 
             //GUILayout.Label("Tool", EditorStyles.boldLabel);
 
-     
+
 
             //m_projectTypeIndex = EditorGUILayout.Popup(m_projectTypeIndex, new string[] { "Template", "Kit" });
 
-           m_projectTypeIndex = GUILayout.Toolbar(m_projectTypeIndex,new string[] {"Template", "Kit","Settings"});
+            m_projectTypeIndex = GUILayout.Toolbar(m_projectTypeIndex, new string[] { "Template", "Kit", "Settings" });
 
             if (m_projectTypeIndex == 0)
             {
@@ -360,13 +357,13 @@ public class AltspaceBuildWindow : EditorWindow
                 m_creatingKit = false;
                 m_settings = false;
             }
-            else if(m_projectTypeIndex == 1)
+            else if (m_projectTypeIndex == 1)
             {
                 m_creatingKit = true;
                 m_creatingTemplate = false;
                 m_settings = false;
             }
-            else if(m_projectTypeIndex == 2)
+            else if (m_projectTypeIndex == 2)
             {
                 m_creatingKit = false;
                 m_creatingTemplate = false;
@@ -385,7 +382,7 @@ public class AltspaceBuildWindow : EditorWindow
 
                 GUILayout.Label("Template", EditorStyles.boldLabel);
 
-                if(!isOffline)
+                if (!isOffline)
                 {
                     if (!userHasTemplates)
                     {
@@ -402,7 +399,7 @@ public class AltspaceBuildWindow : EditorWindow
                     }
                 }
 
-                
+
 
                 if (userHasTemplates)
                 {
@@ -426,7 +423,7 @@ public class AltspaceBuildWindow : EditorWindow
 
                     GUILayout.Space(10);
 
-                    
+
 
                     m_templateScrollPosition = GUILayout.BeginScrollView(m_templateScrollPosition, GUILayout.Height(300));
 
@@ -443,13 +440,13 @@ public class AltspaceBuildWindow : EditorWindow
                     {
                         alignment = TextAnchor.MiddleCenter,
                         fontStyle = FontStyle.Bold
-                        
+
                     };
-                    
+
                     EditorGUILayout.BeginHorizontal();
 
 
-                    
+
                     if (GUILayout.Button("<"))
                     {
                         if (m_currentTemplatePage == 0)
@@ -471,7 +468,7 @@ public class AltspaceBuildWindow : EditorWindow
 
                         _spaceTemplates = m_spaceTemplateCollections[m_currentTemplatePage];
                     }
-                    
+
                     EditorGUILayout.EndHorizontal();
 
                     //EditorGUILayout.EndVertical();
@@ -529,8 +526,6 @@ public class AltspaceBuildWindow : EditorWindow
 
                     IsAndroidBuildTarget = GUILayout.Toggle(IsAndroidBuildTarget, "Build for Android?");
 
-                    IsOSXBuildTarget = GUILayout.Toggle(IsOSXBuildTarget, "Build for Mac?");
-
                     GUILayout.Space(20);
 
                     if (GUILayout.Button("Build"))
@@ -578,11 +573,11 @@ public class AltspaceBuildWindow : EditorWindow
 
                         ProjectName = new string((from char c in ProjectName
                                                   where !char.IsWhiteSpace(c)
-                                                         select c).ToArray());
+                                                  select c).ToArray());
 
                         ProjectName = new string((from char c in ProjectName
                                                   where !symbols.Contains(c)
-                                                         select c).ToArray());
+                                                  select c).ToArray());
 
 
 
@@ -604,11 +599,10 @@ public class AltspaceBuildWindow : EditorWindow
 
 
                         //send info to environment export tool
-                        
+
                         EnvironmentExportTool.Instance.assetBundleName = ProjectName;
                         EnvironmentExportTool.Instance.buildPCAssetBundle = IsWindowsBuildTarget;
                         EnvironmentExportTool.Instance.buildAndroidAssetBundle = IsAndroidBuildTarget;
-                        EnvironmentExportTool.Instance.buildMacAssetBundle = IsOSXBuildTarget;
 
                         outAssetBundleName = ProjectName;
 
@@ -634,16 +628,17 @@ public class AltspaceBuildWindow : EditorWindow
                                 //Debug.LogError("Unable to save out asset bundle for PC (Windows).");
                                 SendErrorMessageToSlack("Unable to save out asset bundle for PC (Windows).");
                             }
-                            if (EnvironmentExportTool.Instance.buildAndroidAssetBundle && !SaveOutAssetBundle(EnvironmentExportTool.Platform.ANDROID))
-                            {
-                                //Debug.LogError("Unable to save out asset bundle for Android.");
-                                SendErrorMessageToSlack("Unable to save out asset bundle for Android.");
-                            }
                             if (EnvironmentExportTool.Instance.buildMacAssetBundle && !SaveOutAssetBundle(EnvironmentExportTool.Platform.MAC))
                             {
                                 //Debug.LogError("Unable to save out asset bundle for Mac.");
                                 SendErrorMessageToSlack("Unable to save out asset bundle for Mac.");
                             }
+                            if (EnvironmentExportTool.Instance.buildAndroidAssetBundle && !SaveOutAssetBundle(EnvironmentExportTool.Platform.ANDROID))
+                            {
+                                //Debug.LogError("Unable to save out asset bundle for Android.");
+                                SendErrorMessageToSlack("Unable to save out asset bundle for Android.");
+                            }
+
 
                             ZipAssetBundles(false);
                         });
@@ -651,7 +646,7 @@ public class AltspaceBuildWindow : EditorWindow
 
                     GUILayout.Space(20);
 
-                    if(!isOffline)
+                    if (!isOffline)
                     {
                         if (GUILayout.Button("Build & Upload"))
                         {
@@ -672,7 +667,6 @@ public class AltspaceBuildWindow : EditorWindow
                             EnvironmentExportTool.Instance.assetBundleName = ProjectName;
                             EnvironmentExportTool.Instance.buildPCAssetBundle = IsWindowsBuildTarget;
                             EnvironmentExportTool.Instance.buildAndroidAssetBundle = IsAndroidBuildTarget;
-                            EnvironmentExportTool.Instance.buildMacAssetBundle = IsOSXBuildTarget;
 
                             outAssetBundleName = ProjectName;
 
@@ -717,7 +711,7 @@ public class AltspaceBuildWindow : EditorWindow
 
                         GUILayout.Space(20);
                     }
-                   
+
                 }
 
                 if (GUILayout.Button("Sign Out"))
@@ -787,7 +781,7 @@ public class AltspaceBuildWindow : EditorWindow
                 GUILayout.Label("Kit Asset Name", EditorStyles.boldLabel);
                 m_prefabName = EditorGUILayout.TextField(m_prefabName.ToLower()).ToLower();
 
-                
+
                 GUILayout.Space(10);
 
 
@@ -798,10 +792,10 @@ public class AltspaceBuildWindow : EditorWindow
                 GUILayout.Space(20);
 
                 GUILayout.Label("Kit Shader", EditorStyles.boldLabel);
-                m_kitShaderTypeIndex = EditorGUILayout.Popup(m_kitShaderTypeIndex, new string[] { "Keep Existing Shader(*Might not be supported)", "MRE Diffuse Vertex", "MRE Unlit"});
+                m_kitShaderTypeIndex = EditorGUILayout.Popup(m_kitShaderTypeIndex, new string[] { "Keep Existing Shader(*Might not be supported)", "MRE Diffuse Vertex", "MRE Unlit" });
 
                 GUILayout.Label("Kit Collider Info", EditorStyles.boldLabel);
-                isKitConvex = GUILayout.Toggle(isKitConvex,"Is the Kit(s) Convex?");
+                isKitConvex = GUILayout.Toggle(isKitConvex, "Is the Kit(s) Convex?");
 
                 GUILayout.Space(20);
                 if (GUILayout.Button("Convert GameObject(s) to Kit Prefab"))
@@ -813,18 +807,18 @@ public class AltspaceBuildWindow : EditorWindow
 
                     nullAssetName = string.IsNullOrEmpty(m_prefabName);
 
-                    if(nullGameObjects || nullProjectName || nullAssetName)
+                    if (nullGameObjects || nullProjectName || nullAssetName)
                     {
                         return;
                     }
-                    
+
 
                     FormatGameObjectsToKit(m_prefabFolderName.ToLower(), m_prefabName.ToLower());
                 }
 
                 GUILayout.Space(5);
 
-                if(nullGameObjects)
+                if (nullGameObjects)
                 {
                     GUILayout.Label("Please select one or more gameobjects and try again.", EditorStyles.helpBox);
                 }
@@ -851,7 +845,7 @@ public class AltspaceBuildWindow : EditorWindow
                     Application.OpenURL("https://account.altvr.com/kits/new");
                 }
 
-                if(!isOffline)
+                if (!isOffline)
                 {
                     if (GUILayout.Button("Load Kits"))
                     {
@@ -859,12 +853,12 @@ public class AltspaceBuildWindow : EditorWindow
                     }
                 }
 
-                
+
 
                 GUILayout.Space(20);
 
 
-                if(userHasKits && !isOffline)
+                if (userHasKits && !isOffline)
                 {
                     m_kitScrollPosition = GUILayout.BeginScrollView(m_kitScrollPosition, GUILayout.Height(300));
 
@@ -885,7 +879,7 @@ public class AltspaceBuildWindow : EditorWindow
                         EditorGUILayout.LabelField(o);
 
 
-                        if(GUILayout.Button("Select", EditorStyles.miniButton))
+                        if (GUILayout.Button("Select", EditorStyles.miniButton))
                         {
                             m_selectedKitIndexInfo.Index = m_kitCollections[m_currentKitPage].kits.FindIndex(x => x.name == o);
                             m_selectedKitIndexInfo.Page = m_currentKitPage;
@@ -944,7 +938,6 @@ public class AltspaceBuildWindow : EditorWindow
 
                 BuildWindowsKit = GUILayout.Toggle(BuildWindowsKit, "Build Kit for Windows?");
                 BuildAndroidKit = GUILayout.Toggle(BuildAndroidKit, "Build Kit for Android?");
-                BuildMacKit = GUILayout.Toggle(BuildMacKit, "Build Kit for Mac?");
 
                 GUILayout.Space(10);
 
@@ -981,11 +974,11 @@ public class AltspaceBuildWindow : EditorWindow
                     {
                         GUILayout.Label("You can upload kit to existing kit: " + m_kitCollections[m_selectedKitIndexInfo.Page].kits[m_selectedKitIndexInfo.Index].name, EditorStyles.helpBox);
                     }
-                    
+
 
                     GUILayout.Space(20);
 
-                    
+
                     m_prefabKitsScroll = GUILayout.BeginScrollView(m_prefabKitsScroll, GUILayout.Height(100));
 
 
@@ -999,23 +992,23 @@ public class AltspaceBuildWindow : EditorWindow
 
                         if (GUILayout.Button("Build", GUILayout.Width(100)))
                         {
-                            
+
 
                             BuildKit(dName, string.Empty);
                         }
 
-                        if(!isOffline && userHasKits)
+                        if (!isOffline && userHasKits)
                         {
                             if (GUILayout.Button("Build & Upload"))
                             {
                                 string kit_id = m_kitCollections[m_selectedKitIndexInfo.Page].kits[m_selectedKitIndexInfo.Index].kit_id;
-                                BuildKit(dName,kit_id, (path) =>
+                                BuildKit(dName, kit_id, (path) =>
                                 {
                                     UploadKit(path);
                                 });
                             }
                         }
-                        
+
 
                         GUILayout.EndHorizontal();
                     }
@@ -1035,7 +1028,7 @@ public class AltspaceBuildWindow : EditorWindow
 
                 GUILayout.Space(10);
             }
-            else if(m_settings)
+            else if (m_settings)
             {
                 GUILayout.Label("Settings", EditorStyles.boldLabel);
 
@@ -1043,7 +1036,7 @@ public class AltspaceBuildWindow : EditorWindow
 
                 m_disableAutoLayers = EditorGUILayout.Toggle("Disable Auto Layers", m_disableAutoLayers);
 
-                if(m_disableAutoLayers)
+                if (m_disableAutoLayers)
                 {
                     GUILayout.Label("Disabling this feature will remove" +
                         "\nthe auto asssigned Nav Mesh layer." +
@@ -1055,7 +1048,7 @@ public class AltspaceBuildWindow : EditorWindow
         }
 
         //curl -v -d "user[email]=myemail@gmail.com&user[password]=1234567" https://account.altvr.com/users/sign_in.json -c cookie
-        GUILayout.Label("World Building Toolkit Version: 0.8.8", EditorStyles.centeredGreyMiniLabel);
+        GUILayout.Label("World Building Toolkit Version: 0.8.6", EditorStyles.centeredGreyMiniLabel);
 
 
     }
@@ -1072,9 +1065,9 @@ public class AltspaceBuildWindow : EditorWindow
             Debug.LogError("This is an unexpected version format for unity and may confuse the backend");
             return;
         }
-        else if (versionAsInt != 20194)
+        else if (versionAsInt != 20181)
         {
-            Debug.LogWarning("This is an unsupported version of Unity. Please download version 2019.4.18f1 for best results.");
+            Debug.LogWarning("This is an unsupported version of Unity. Please download version 2018.1.9f2 for best results.");
         }
     }
 
@@ -1088,9 +1081,9 @@ public class AltspaceBuildWindow : EditorWindow
             Debug.LogError("This is an unexpected version format for unity and may confuse the backend");
             return;
         }
-        else if (versionAsInt != 20194)
+        else if (versionAsInt != 20181)
         {
-            Debug.LogWarning("This is an unsupported version of Unity. Please download version 2019.4.18f1 for best results.");
+            Debug.LogWarning("This is an unsupported version of Unity. Please download version 2018.1.9f2 for best results.");
         }
 
         if (rememberUserLogin)
@@ -1111,7 +1104,7 @@ public class AltspaceBuildWindow : EditorWindow
         //var curlLocation = Application.dataPath + Path.DirectorySeparatorChar + "Plugins" + Path.DirectorySeparatorChar + "curl.exe";
         var envPath = Application.dataPath + Path.DirectorySeparatorChar + "Plugins";
 
-        //var setExePath = "/c start cd " + envPath;
+        //var setExePath = "-c start cd " + envPath;
 
         var batchCMD = new StringBuilder();
         batchCMD.Append("curl -v -d \"user[email]=")
@@ -1121,7 +1114,7 @@ public class AltspaceBuildWindow : EditorWindow
             .Append("\" https://account.altvr.com/users/sign_in.json -c cookie");
 
         var cmdLines = new List<string>();
-        cmdLines.Add("echo off");
+        //cmdLines.Add("echo off");
         cmdLines.Add("title Sign In to AltspaceVR");
         cmdLines.Add(batchCMD.ToString());
 
@@ -1135,8 +1128,8 @@ public class AltspaceBuildWindow : EditorWindow
         var process = new System.Diagnostics.ProcessStartInfo();
         process.WorkingDirectory = @envPath;
         process.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
-        process.FileName = "cmd.exe";
-        process.Arguments = "/c signin.bat";
+        process.FileName = "bash";
+        process.Arguments = "-c \"source signin.bat\"";
         System.Diagnostics.Process.Start(process);
 
     }
@@ -1145,12 +1138,12 @@ public class AltspaceBuildWindow : EditorWindow
     {
         var envPath = Application.dataPath + Path.DirectorySeparatorChar + "Plugins";
 
-        if(File.Exists(envPath + Path.DirectorySeparatorChar + "cookie"))
+        if (File.Exists(envPath + Path.DirectorySeparatorChar + "cookie"))
         {
             File.Delete(envPath + Path.DirectorySeparatorChar + "cookie");
             File.Delete(envPath + Path.DirectorySeparatorChar + "cookie.meta");
         }
-        
+
         if (File.Exists(envPath + Path.DirectorySeparatorChar + "signin.bat"))
         {
             File.Delete(envPath + Path.DirectorySeparatorChar + "signin.bat");
@@ -1176,7 +1169,7 @@ public class AltspaceBuildWindow : EditorWindow
             File.Delete(envPath + Path.DirectorySeparatorChar + "space_templates.json.meta");
         }
 
-        if(File.Exists(Path.Combine(envPath, "uploadKit.bat")))
+        if (File.Exists(Path.Combine(envPath, "uploadKit.bat")))
         {
             File.Delete(Path.Combine(envPath, "uploadKit.bat"));
             File.Delete(Path.Combine(envPath, "uploadKit.bat.meta"));
@@ -1188,7 +1181,7 @@ public class AltspaceBuildWindow : EditorWindow
             File.Delete(Path.Combine(envPath, "kits.json.meta"));
         }
 
-        if (File.Exists(Path.Combine(envPath,"space_template_pages.bat")))
+        if (File.Exists(Path.Combine(envPath, "space_template_pages.bat")))
         {
             File.Delete(Path.Combine(envPath, "space_template_pages.bat"));
             File.Delete(Path.Combine(envPath, "space_template_pages.bat.meta"));
@@ -1235,7 +1228,7 @@ public class AltspaceBuildWindow : EditorWindow
 
     private void CheckAutenticationCookie()
     {
-        if(isOffline)
+        if (isOffline)
         {
             isUserSignedIn = true;
             return;
@@ -1264,8 +1257,8 @@ public class AltspaceBuildWindow : EditorWindow
 
         var process = new System.Diagnostics.ProcessStartInfo();
         process.WorkingDirectory = envPath;
-        process.FileName = "cmd.exe";
-        process.Arguments = "/c space_templates.bat";
+        process.FileName = "bash";
+        process.Arguments = "-c \"source space_templates.bat\"";
         process.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         var currentProcess = System.Diagnostics.Process.Start(process);
 
@@ -1273,7 +1266,7 @@ public class AltspaceBuildWindow : EditorWindow
 
         currentProcess.WaitForExit();
 
-    
+
         OnTemplatesLoaded();
     }
 
@@ -1282,25 +1275,25 @@ public class AltspaceBuildWindow : EditorWindow
         m_totalTemplatePages = _spaceTemplates.pagination.pages;
 
         StringBuilder sb = new StringBuilder();
-        sb.Append("echo on")
+        sb.Append("")
             .AppendLine("title AltspaceVR Templates")
             .AppendLine();
 
-        for(int i = 0; i < m_totalTemplatePages; i++)
+        for (int i = 0; i < m_totalTemplatePages; i++)
         {
-            if(i == 0)
+            if (i == 0)
             {
                 sb.AppendLine("curl -v -b cookie https://account.altvr.com/api/space_templates/my.json -o page1.json");
             }
             else
             {
-                sb.AppendLine("curl -v -b cookie https://account.altvr.com/api/space_templates/my.json?page=" + (i + 1).ToString() + " -o page" + (i+ 1).ToString() + ".json");
+                sb.AppendLine("curl -v -b cookie https://account.altvr.com/api/space_templates/my.json?page=" + (i + 1).ToString() + " -o page" + (i + 1).ToString() + ".json");
             }
         }
 
         var envPath = Application.dataPath + Path.DirectorySeparatorChar + "Plugins";
 
-        if(File.Exists(Path.Combine(envPath,"space_template_pages.bat")))
+        if (File.Exists(Path.Combine(envPath, "space_template_pages.bat")))
         {
             File.Delete(Path.Combine(envPath, "space_template_pages.bat"));
             File.Delete(Path.Combine(envPath, "space_template_pages.bat.meta"));
@@ -1310,8 +1303,8 @@ public class AltspaceBuildWindow : EditorWindow
 
         var process = new System.Diagnostics.ProcessStartInfo();
         process.WorkingDirectory = envPath;
-        process.FileName = "cmd.exe";
-        process.Arguments = "/c space_template_pages.bat";
+        process.FileName = "bash";
+        process.Arguments = "-c \"source space_template_pages.bat\"";
         process.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         var currentProcess = System.Diagnostics.Process.Start(process);
 
@@ -1322,7 +1315,7 @@ public class AltspaceBuildWindow : EditorWindow
         m_spaceTemplateCollections.Clear();
         m_spaceTemplateCollections.TrimExcess();
 
-        for(int i = 0; i < m_totalTemplatePages; i++)
+        for (int i = 0; i < m_totalTemplatePages; i++)
         {
             if (!File.Exists(Path.Combine(envPath, "page" + (i + 1).ToString() + ".json")))
                 continue;
@@ -1363,8 +1356,8 @@ public class AltspaceBuildWindow : EditorWindow
 
         var process = new System.Diagnostics.ProcessStartInfo();
         process.WorkingDirectory = envPath;
-        process.FileName = "cmd.exe";
-        process.Arguments = "/c kits.bat";
+        process.FileName = "bash";
+        process.Arguments = "-c \"source kits.bat\"";
         process.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         var currentProcess = System.Diagnostics.Process.Start(process);
 
@@ -1384,12 +1377,12 @@ public class AltspaceBuildWindow : EditorWindow
         Debug.Log("Pages: " + pageData.pages);
         Debug.Log("Count: " + pageData.count);
 
-        if(_kits.pagination.pages > 1)
+        if (_kits.pagination.pages > 1)
         {
             m_totalKitPages = _kits.pagination.pages;
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("echo on")
+            sb.Append("")
                 .AppendLine("title AltspaceVR Kits")
                 .AppendLine();
 
@@ -1403,7 +1396,7 @@ public class AltspaceBuildWindow : EditorWindow
                 {
                     sb.AppendLine("curl -v -b cookie https://account.altvr.com/api/kits/my.json?page=" + (i + 1).ToString() + " -o page" + (i + 1).ToString() + "-kits.json");
                 }
-            }      
+            }
 
             if (File.Exists(Path.Combine(envPath, "kit_pages.bat")))
             {
@@ -1415,8 +1408,8 @@ public class AltspaceBuildWindow : EditorWindow
 
             var newProcess = new System.Diagnostics.ProcessStartInfo();
             newProcess.WorkingDirectory = envPath;
-            newProcess.FileName = "cmd.exe";
-            newProcess.Arguments = "/c space_template_pages.bat";
+            newProcess.FileName = "bash";
+            newProcess.Arguments = "-c \"source space_template_pages.bat\"";
             newProcess.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
             var newCurrentProcess = System.Diagnostics.Process.Start(newProcess);
 
@@ -1426,7 +1419,7 @@ public class AltspaceBuildWindow : EditorWindow
 
             m_kitCollections.Clear();
             m_kitCollections.TrimExcess();
-            
+
 
             for (int i = 0; i < m_totalKitPages; i++)
             {
@@ -1454,7 +1447,7 @@ public class AltspaceBuildWindow : EditorWindow
                 userHasKits = false;
             }
         }
-        else if(_kits.pagination.pages == 1)
+        else if (_kits.pagination.pages == 1)
         {
             m_kitCollections.Clear();
             m_kitCollections.TrimExcess();
@@ -1477,7 +1470,7 @@ public class AltspaceBuildWindow : EditorWindow
         var prefabPreviewPath = "Assets/Prefabs/" + folderName + "/Screenshots/";
 
         var gos = Selection.gameObjects.ToList();
-        
+
         Thread.Sleep(1000);
 
         if (gos.Count > 1)
@@ -1488,7 +1481,7 @@ public class AltspaceBuildWindow : EditorWindow
             foreach (var go in gos)
             {
                 string originalName = go.name;
-                
+
 
                 EditorUtility.DisplayProgressBar("Converting Gameobjects to Kit Prefabs", "Please wait...", gos.Count / gos.Count);
 
@@ -1663,15 +1656,15 @@ public class AltspaceBuildWindow : EditorWindow
                 if (m_kitShaderTypeIndex == 0)
                     continue;
 
-                if(m_kitShaderTypeIndex == 1)
+                if (m_kitShaderTypeIndex == 1)
                 {
-                    if(parent.transform.GetChild(i).GetComponent<Renderer>())
+                    if (parent.transform.GetChild(i).GetComponent<Renderer>())
                     {
                         var r = parent.transform.GetChild(i).GetComponent<Renderer>();
                         r.sharedMaterial.shader = Shader.Find("MRE/DiffuseVertex");
-                    }                   
+                    }
                 }
-                else if(m_kitShaderTypeIndex == 2)
+                else if (m_kitShaderTypeIndex == 2)
                 {
                     if (parent.transform.GetChild(i).GetComponent<Renderer>())
                     {
@@ -1692,14 +1685,14 @@ public class AltspaceBuildWindow : EditorWindow
             Texture2D assetPreview = null;
             int counter = 0;
 
-            while(assetPreview == null && counter < 100)
+            while (assetPreview == null && counter < 100)
             {
                 assetPreview = AssetPreview.GetAssetPreview(prefab);
                 counter++;
                 System.Threading.Thread.Sleep(15);
             }
 
-            
+
 
             if (!Directory.Exists(prefabPreviewPath))
             {
@@ -1841,7 +1834,7 @@ public class AltspaceBuildWindow : EditorWindow
 
             scene.ForEach(go => go.transform.SetParent(environment.transform));
 
-            if(!m_disableAutoLayers)
+            if (!m_disableAutoLayers)
                 environment.layer = 14;
 
             for (int i = 0; i < environment.transform.childCount; i++)
@@ -2016,14 +2009,14 @@ public class AltspaceBuildWindow : EditorWindow
             string[] scenes = { tempSceneFile };
             AssetBundleBuild[] buildMap = { new AssetBundleBuild() };
 
-            
+
             buildMap[0].assetNames = scenes;
             buildMap[0].assetBundleName = outAssetBundleName;
-            //buildMap[0].assetBundleVariant = "unity2018_1";
+            buildMap[0].assetBundleVariant = "unity2018_1";
             BuildTarget target = BuildTarget.StandaloneWindows;
             if (platform == EnvironmentExportTool.Platform.MAC)
             {
-                target = BuildTarget.StandaloneOSX;
+                //target = BuildTarget.StandaloneOSX;
             }
             else if (platform == EnvironmentExportTool.Platform.ANDROID)
             {
@@ -2038,7 +2031,7 @@ public class AltspaceBuildWindow : EditorWindow
             BuildAssetBundleOptions options = shouldCompress ? BuildAssetBundleOptions.None : BuildAssetBundleOptions.UncompressedAssetBundle;
 
             BuildPipeline.BuildAssetBundles(outputDir, buildMap, options, target);
-            
+
 
 
 
@@ -2138,7 +2131,7 @@ public class AltspaceBuildWindow : EditorWindow
 
     private void UploadKit(string path)
     {
-        if(!File.Exists(path))
+        if (!File.Exists(path))
         {
             Debug.LogError("File in path doesn't exist!");
             return;
@@ -2161,17 +2154,17 @@ public class AltspaceBuildWindow : EditorWindow
 
         List<string> batCMDs = new List<string>();
 
-        batCMDs.Add("echo off");
+        //batCMDs.Add("echo off");
         batCMDs.Add(cmd.ToString());
-       // batCMDs.Add("cmd /K");
+        // batCMDs.Add("cmd /K");
 
         File.WriteAllLines(envPath + Path.DirectorySeparatorChar + "uploadKit.bat", batCMDs.ToArray());
 
 
         var process = new System.Diagnostics.ProcessStartInfo();
         process.WorkingDirectory = envPath;
-        process.FileName = "cmd.exe";
-        process.Arguments = "/c uploadKit.bat";
+        process.FileName = "bash";
+        process.Arguments = "-c \"source uploadKit.bat\"";
         process.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         var processInfo = System.Diagnostics.Process.Start(process);
         processInfo.WaitForExit();
@@ -2185,7 +2178,7 @@ public class AltspaceBuildWindow : EditorWindow
     {
 
         var saveLocation = Directory.GetParent(Application.dataPath).FullName;
-        
+
 
         //remove any shitty folders that could screw this crap up
         if (Directory.Exists(saveLocation + Path.DirectorySeparatorChar + "AssetBundle"))
@@ -2193,7 +2186,7 @@ public class AltspaceBuildWindow : EditorWindow
             Directory.Delete(@saveLocation + Path.DirectorySeparatorChar + "AssetBundle", true);
         }
 
-        if(kit_id == string.Empty)
+        if (kit_id == string.Empty)
         {
             if (Directory.Exists(saveLocation + Path.DirectorySeparatorChar + fileName))
             {
@@ -2208,12 +2201,12 @@ public class AltspaceBuildWindow : EditorWindow
             }
         }
 
-        
+
 
 
         AssetBundleBuild[] abb = { new AssetBundleBuild() };
 
-        if(kit_id == string.Empty)
+        if (kit_id == string.Empty)
         {
             abb[0].assetBundleName = fileName;
         }
@@ -2234,7 +2227,7 @@ public class AltspaceBuildWindow : EditorWindow
             Directory.CreateDirectory(temp);
         }
 
-        if(kit_id != string.Empty)
+        if (kit_id != string.Empty)
         {
             foreach (var file in fileNames)
             {
@@ -2254,7 +2247,7 @@ public class AltspaceBuildWindow : EditorWindow
 
         var newFileNames = Directory.GetFiles(temp);
 
-        abb[0].assetNames = kit_id == string.Empty? fileNames : newFileNames;
+        abb[0].assetNames = kit_id == string.Empty ? fileNames : newFileNames;
 
         if (!Directory.Exists(saveLocation + Path.DirectorySeparatorChar + "AssetBundle"))
         {
@@ -2274,16 +2267,6 @@ public class AltspaceBuildWindow : EditorWindow
             }
 
             BuildPipeline.BuildAssetBundles(saveLocation + Path.DirectorySeparatorChar + "AssetBundle" + Path.DirectorySeparatorChar + "Android", abb, BuildAssetBundleOptions.None, BuildTarget.Android);
-        }
-
-        if (BuildMacKit)
-        {
-            if (!Directory.Exists(saveLocation + Path.DirectorySeparatorChar + "AssetBundle" + Path.DirectorySeparatorChar + "Mac"))
-            {
-                Directory.CreateDirectory(saveLocation + Path.DirectorySeparatorChar + "AssetBundle" + Path.DirectorySeparatorChar + "Mac");
-            }
-
-            BuildPipeline.BuildAssetBundles(saveLocation + Path.DirectorySeparatorChar + "AssetBundle" + Path.DirectorySeparatorChar + "Mac", abb, BuildAssetBundleOptions.None, BuildTarget.StandaloneOSX);
         }
 
 
@@ -2314,12 +2297,6 @@ public class AltspaceBuildWindow : EditorWindow
                 Directory.CreateDirectory(saveLocation + Path.DirectorySeparatorChar + fileName + Path.DirectorySeparatorChar + "AssetBundles" + Path.DirectorySeparatorChar + "Android");
         }
 
-        if (BuildMacKit)
-        {
-            if (!Directory.Exists(saveLocation + Path.DirectorySeparatorChar + fileName + Path.DirectorySeparatorChar + "AssetBundles" + Path.DirectorySeparatorChar + "Mac"))
-                Directory.CreateDirectory(saveLocation + Path.DirectorySeparatorChar + fileName + Path.DirectorySeparatorChar + "AssetBundles" + Path.DirectorySeparatorChar + "Mac");
-        }
-
 
         var oldLocation = saveLocation + Path.DirectorySeparatorChar + "AssetBundle";
         var newLocation = saveLocation + Path.DirectorySeparatorChar + fileName + Path.DirectorySeparatorChar + "AssetBundles";
@@ -2334,9 +2311,9 @@ public class AltspaceBuildWindow : EditorWindow
                 var fileShortName = x.Remove(0, oldLocation.Length);
 
                 File.Copy(@x, @newLocation + Path.DirectorySeparatorChar + fileShortName);
-                
 
-                    
+
+
                 File.Delete(@x);
             }
         }
@@ -2347,9 +2324,9 @@ public class AltspaceBuildWindow : EditorWindow
             {
                 var fileShortName = x.Remove(0, screenshotsFolderPath.Length + 1);
 
-                if(kit_id == string.Empty)
+                if (kit_id == string.Empty)
                 {
-                    File.Copy(@x, screenshotLocation + Path.DirectorySeparatorChar +  fileShortName);
+                    File.Copy(@x, screenshotLocation + Path.DirectorySeparatorChar + fileShortName);
                 }
                 else
                 {
@@ -2379,31 +2356,13 @@ public class AltspaceBuildWindow : EditorWindow
 
 
                 File.Copy(@x, @newLocation + Path.DirectorySeparatorChar + "Android" + Path.DirectorySeparatorChar + fileShortName);
-                
+
                 File.Delete(@x);
             }
         }
 
         if (Directory.Exists(oldLocation + Path.DirectorySeparatorChar + "Android"))
             Directory.Delete(@oldLocation + Path.DirectorySeparatorChar + "Android", true);
-
-        if (BuildMacKit)
-        {
-            var macFiles = Directory.GetFiles(oldLocation + Path.DirectorySeparatorChar + "Mac");
-
-            foreach (var x in macFiles)
-            {
-                var fileShortName = x.Remove(0, oldLocation.Length + 4);
-
-
-                File.Copy(@x, @newLocation + Path.DirectorySeparatorChar + "Mac" + Path.DirectorySeparatorChar + fileShortName);
-
-                File.Delete(@x);
-            }
-        }
-
-        if (Directory.Exists(oldLocation + Path.DirectorySeparatorChar + "Mac"))
-            Directory.Delete(@oldLocation + Path.DirectorySeparatorChar + "Mac", true);
 
         if (Directory.Exists(oldLocation))
             Directory.Delete(@oldLocation, true);
@@ -2425,9 +2384,9 @@ public class AltspaceBuildWindow : EditorWindow
                 File.Delete(saveLocation + Path.DirectorySeparatorChar + kit_id + "_" + fileName.ToLower() + ".zip");
             }
         }
-        
 
-        string savePathFull = kit_id == string.Empty? saveLocation + Path.DirectorySeparatorChar + fileName.ToLower() + ".zip":
+
+        string savePathFull = kit_id == string.Empty ? saveLocation + Path.DirectorySeparatorChar + fileName.ToLower() + ".zip" :
                                                                                 saveLocation + Path.DirectorySeparatorChar + kit_id + "_" + fileName.ToLower() + ".zip";
         zipFile.Save(savePathFull);
 
@@ -2436,9 +2395,9 @@ public class AltspaceBuildWindow : EditorWindow
         System.Threading.Thread.Sleep(3000);
 
         Directory.Delete(saveLocation + Path.DirectorySeparatorChar + fileName, true);
-        Directory.Delete(temp,true);
+        Directory.Delete(temp, true);
 
-        if(onComplete == null)
+        if (onComplete == null)
             System.Diagnostics.Process.Start("explorer.exe", saveLocation);
         else
         {
@@ -2484,7 +2443,7 @@ public class AltspaceBuildWindow : EditorWindow
     private void UploadToAltspaceVR()
     {
         //if (spaceTemplates == null || spaceTemplates.Count == 0)
-        if(_spaceTemplates == null || _spaceTemplates.space_templates.Count == 0)
+        if (_spaceTemplates == null || _spaceTemplates.space_templates.Count == 0)
         {
             SendErrorMessageToSlack("You are trying to upload your space without a target template. Please load an existing template, or create a new one.");
 
@@ -2509,7 +2468,7 @@ public class AltspaceBuildWindow : EditorWindow
 
         List<string> batCMDs = new List<string>();
 
-        batCMDs.Add("echo off");
+        //batCMDs.Add("echo off");
         batCMDs.Add(cmd.ToString());
 
         File.WriteAllLines(envPath + Path.DirectorySeparatorChar + "upload.bat", batCMDs.ToArray());
@@ -2517,8 +2476,8 @@ public class AltspaceBuildWindow : EditorWindow
 
         var process = new System.Diagnostics.ProcessStartInfo();
         process.WorkingDirectory = envPath;
-        process.FileName = "cmd.exe";
-        process.Arguments = "/c upload.bat";
+        process.FileName = "bash";
+        process.Arguments = "-c \"source upload.bat\"";
         process.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
         var processInfo = System.Diagnostics.Process.Start(process);
         processInfo.WaitForExit();
@@ -2546,7 +2505,7 @@ public class AltspaceBuildWindow : EditorWindow
 
         List<string> batCMDs = new List<string>();
 
-        batCMDs.Add("echo off");
+        //batCMDs.Add("echo off");
         batCMDs.Add(cmd.ToString());
 
         if (File.Exists(envPath + Path.DirectorySeparatorChar + "error.bat"))
@@ -2558,14 +2517,13 @@ public class AltspaceBuildWindow : EditorWindow
 
         var process = new System.Diagnostics.ProcessStartInfo();
         process.WorkingDirectory = envPath;
-        process.FileName = "cmd.exe";
-        process.Arguments = "/c error.bat";
+        process.FileName = "bash";
+        process.Arguments = "-c \"source error.bat\"";
         System.Diagnostics.Process.Start(process);
 
         Debug.LogError(errorMessage);
     }
 }
 #endif
-
 
 
