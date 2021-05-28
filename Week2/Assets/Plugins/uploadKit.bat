@@ -1,1 +1,0 @@
-curl -v -b cookie -X PUT -F "kit[zip]=@/Users/aliciatan/Desktop/VRWorldBuilding/MountainDJ/Week2/1745891265842512806_1745891265842512806_test.zip" -F "kit[game_engine_version]=20194" https://account.altvr.com/api/kits/1745891265842512806.json
